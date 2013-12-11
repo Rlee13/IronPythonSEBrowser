@@ -1,0 +1,12 @@
+SEBrowser.ipy v.0.1
+Loads the preview images of *.par and *.asm files from a folder
+and show them in a thumbnail viewer.
+
+Freeware. For educational purposes only, use it on your own risk.
+
+The program requires Interop.SeThumbnailLib.dll to be copied in its
+folder. Tested with IronPython 2.7.4 on .NET 4.0.
+
+Simply run:
+  ipy.exe SEBrowser.ipy
+
