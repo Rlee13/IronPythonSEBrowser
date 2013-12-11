@@ -4,6 +4,9 @@ and show them in a thumbnail viewer.
 
 Freeware. For educational purposes only, use it at your own risk.
 
+You can read a brief tutorial at 
+http://www.arleedesign.com/Services/IronPythonForSETutorial.html
+
 The program requires Interop.SeThumbnailLib.dll to be copied in its
 folder. Tested with IronPython 2.7.4 on .NET 4.0.
 
