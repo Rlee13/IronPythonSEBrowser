@@ -82,7 +82,7 @@ class MainForm(Form):
         self.sebrowser.AutoScroll = True
         self.sebrowser.BackColor = System.Drawing.SystemColors.Control
         self.sebrowser.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        self.sebrowser.Directorypath = None
+        # self.sebrowser.Directorypath = None
         self.sebrowser.Location = System.Drawing.Point(0, 50)
         self.sebrowser.Name = "SEBrowser"
         self.sebrowser.Size = System.Drawing.Size(860, 547)
@@ -130,7 +130,7 @@ class MainForm(Form):
             self.Text = "SEBrowser in Ironpython"        
             self.sebrowser.Directorypath = dlg.SelectedPath
             self.Text = self.Text + " " + dlg.SelectedPath
-        if self.sebrowser.Controls.Count <> 0:
+        if self.sebrowser.Controls.Count != 0:
             self.sebrowser.RemoveControls()
         self.sebrowser.CreateListing()
 
