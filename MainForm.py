@@ -43,6 +43,7 @@ class MainForm(Form):
         #
         openToolStripButton = System.Windows.Forms.ToolStripButton()
         runToolStripButtonSeparator = System.Windows.Forms.ToolStripButton()
+        upToolStripButton = System.Windows.Forms.ToolStripButton()
         runToolStripButton = System.Windows.Forms.ToolStripButton()
         #
         # toolStrip->openToolStripButton
@@ -58,6 +59,15 @@ class MainForm(Form):
         #
         runToolStripButtonSeparator.Name = "runToolStripButtonSeparator"
         runToolStripButtonSeparator.Size = System.Drawing.Size(6, 24)
+        #
+        # toolStrip->upToolStripButton
+        #
+        upToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        upToolStripButton.Image = Image.FromFile(".\Resources\\Up.png")
+        upToolStripButton.Name = "upToolStripButton"
+        upToolStripButton.Size = System.Drawing.Size(23, 24)
+        upToolStripButton.Text = "UpLevel"
+        upToolStripButton.Click += self.upToolStripMenuItem_Click
         #
         # toolStrip->runToolStripButton
         #
@@ -107,8 +117,6 @@ class MainForm(Form):
         self.sebrowser.AutoScroll = True
         self.sebrowser.BackColor = System.Drawing.SystemColors.Control
         self.sebrowser.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        # self.sebrowser.Directorypath = None
-        # self.sebrowser.Location = System.Drawing.Point(0, 50)
         self.sebrowser.Name = "SEBrowser"
         self.sebrowser.Size = System.Drawing.Size(600, 500)
         self.sebrowser.TabIndex = 1
@@ -131,7 +139,10 @@ class MainForm(Form):
         self.menuStrip.Items.AddRange((fileMenu,editMenu,helpMenu))
 
         # Add all together into a ToolMenu
-        self.toolStrip.Items.AddRange((openToolStripButton, runToolStripButtonSeparator, runToolStripButton))
+        self.toolStrip.Items.AddRange((openToolStripButton, 
+                                       runToolStripButtonSeparator, 
+                                       upToolStripButton, 
+                                       runToolStripButton))
 
         #
         # MainForm
@@ -141,15 +152,15 @@ class MainForm(Form):
         self.ClientSize = System.Drawing.Size(860, 550)
         self.Controls.Add(self.SplitContainer1)
         self.Controls.Add(self.statusStrip)
-        # self.Controls.Add(self.sebrowser)
         self.Controls.Add(self.toolStrip)
         self.Controls.Add(self.menuStrip)
 
         self.IsMdiContainer = True
         self.MainMenuStrip = self.menuStrip
         self.Name = "MainForm"
-        # When Form loads for the first time
+        # 
         self.Load += self.MainForm_Load
+
         self.menuStrip.ResumeLayout(False)
         self.menuStrip.PerformLayout()
         self.toolStrip.ResumeLayout(False)
@@ -162,7 +173,6 @@ class MainForm(Form):
         # for info in getInfo:
         #     print (info)
 
-#        initFolder = "C:\\"
         initFolder = os.getcwd() + "/Resources"
         rootnode = self.TreeView1.Nodes.Add(initFolder)
         self.FillChildNodes(rootnode)
@@ -171,7 +181,6 @@ class MainForm(Form):
     def FillChildNodes(self, node):
         try:
             dirs = System.IO.DirectoryInfo(node.FullPath)
-#            print dirs
             for dirInfo in dirs.GetDirectories():
                 try:
                     newnode = System.Windows.Forms.TreeNode(dirInfo.Name)
@@ -185,16 +194,13 @@ class MainForm(Form):
 
         except Exception as ex:
             print (ex)
-            pass
 
     def TreeView1_BeforeExpand(self, sender, e):
-#        print "treeView1_BeforeExpand"
         if (e.Node.Nodes[0].Text == "*"):
             e.Node.Nodes.Clear()
             self.FillChildNodes(e.Node)
 
     def TreeView1_AfterSelect(self, sender, event_args):
-#        print "TreeView1_AfterSelect"
         self.Text = "SEBrowser: "
         pathName = self.TreeView1.SelectedNode.FullPath
         self.sebrowser.Directorypath = pathName
@@ -212,6 +218,20 @@ class MainForm(Form):
         if self.sebrowser.Controls.Count != 0:
             self.sebrowser.RemoveControls()
         self.sebrowser.CreateListing()
+
+        # clear the tree before adding new tree
+        self.TreeView1.Nodes.Clear()
+        _new_path = self.TreeView1.Nodes.Add(self.sebrowser.Directorypath)
+        self.FillChildNodes(_new_path)
+        self.TreeView1.Nodes[0].Expand()
+
+    def upToolStripMenuItem_Click(self, sender, event_args):
+        print()
+        _parent_path = System.IO.Directory.GetParent(self.sebrowser.Directorypath)
+        self.TreeView1.Nodes.Clear()
+        _new_path = self.TreeView1.Nodes.Add(_parent_path)
+        self.FillChildNodes(_new_path)
+        self.TreeView1.Nodes[0].Expand()
 
     def OnExit(self, sender, event_args):
         self.Close()

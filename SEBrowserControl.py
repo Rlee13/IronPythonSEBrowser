@@ -30,7 +30,7 @@ class SEBrowserControlClass(System.Windows.Forms.UserControl):
         if self.Directorypath is not None:
             diar = []
             for filename in os.listdir(self.Directorypath):
-                if filename.endswith((".par", ".asm")):
+                if filename.endswith((".par", ".asm", ".psm")):
                     diar.append(filename)
             for dra in diar:
                 self.DrawGroupBox(dra)
@@ -44,7 +44,6 @@ class SEBrowserControlClass(System.Windows.Forms.UserControl):
         fullpath = self.Directorypath + "\\" + filename
 
         hBitmap = thumbnailExtractor.GetThumbnail(fullpath, hBitmap)
-        # if (hBitmap != System.IntPtr.Zero):
         if (hBitmap != 0):
             self.GroupBox1 = System.Windows.Forms.Panel()
             self.Label1 = System.Windows.Forms.Label()
@@ -70,8 +69,7 @@ class SEBrowserControlClass(System.Windows.Forms.UserControl):
             self.GroupBox1.Size = System.Drawing.Size(self.PicWidth, self.PicHeight)
             self.PictureBox1.TabIndex = self._tabindex
             self._tabindex += 1
-            # self.GroupBox1.BorderStyle = None
-            # self.GroupBox1.BorderStyle = System.Windows.Forms.BorderStyle.None
+            self.GroupBox1.BorderStyle = 0
             self.GroupBox1.Click += self.GB_Click
 
             self.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -91,9 +89,8 @@ class SEBrowserControlClass(System.Windows.Forms.UserControl):
         if type(sender) == type(self.GroupBox1):
             GB = sender
 
-        # for ctrl in self.Controls:
-            # ctrl.BorderStyle = None
-            # ctrl.BorderStyle = System.Windows.Forms.BorderStyle.None
+        for ctrl in self.Controls:
+            ctrl.BorderStyle = 0
 
         GB.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         _spliterpanel = self.Parent
