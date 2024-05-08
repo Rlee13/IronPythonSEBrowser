@@ -12,7 +12,7 @@
 # Freeware. For educational purposes only, use it at your own risk.
 #
 # The program requires Interop.SeThumbnailLib.dll to be copied in Libs
-# folder. Tested with IronPython 2.7.12 on .NET 4.0.
+# folder. Tested with IronPython 3.4.1 on .NET 4.6.2.
 #
 # The file has the extension .ipy which is a personal preference,
 # feel free to changed it to any other extension (usualy .py).
