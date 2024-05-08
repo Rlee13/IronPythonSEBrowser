@@ -1,9 +1,10 @@
-import clr
+import clr, sys, os
+sys.path.append(os.getcwd() + "/Libs")
+
 clr.AddReference("System.Drawing")
 clr.AddReference("Interop.SeThumbnailLib.dll")
 #
 import System
-import os
 import SeThumbnailLib as SETL
 
 class SEBrowserControlClass(System.Windows.Forms.UserControl):
@@ -16,7 +17,7 @@ class SEBrowserControlClass(System.Windows.Forms.UserControl):
         self.Dock = System.Windows.Forms.DockStyle.Fill
         self.ResumeLayout(False)
         
-        self.Directorypath = ""
+        self.Directorypath = os.getcwd() + "/Resources"
 
     def CreateListing(self):
         self.XLocation = 25
@@ -27,7 +28,7 @@ class SEBrowserControlClass(System.Windows.Forms.UserControl):
         if self.Directorypath is not None:
             diar = []
             for filename in os.listdir(self.Directorypath):
-                if filename.endswith(".par") or filename.endswith(".asm"):
+                if filename.endswith((".par", ".asm")):
                     diar.append(filename)
             for dra in diar:
                 self.DrawGroupBox(dra)
@@ -63,7 +64,7 @@ class SEBrowserControlClass(System.Windows.Forms.UserControl):
         fullpath = self.Directorypath + "\\" + filename
 
         hBitmap = thumbnailExtractor.GetThumbnail(fullpath, hBitmap)
-        if (hBitmap <> System.IntPtr.Zero):
+        if (hBitmap != System.IntPtr.Zero):
             self.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
             self.PictureBox1.WaitOnLoad = True
             self.PictureBox1.Image = System.Drawing.Image.FromHbitmap(System.IntPtr(hBitmap))
